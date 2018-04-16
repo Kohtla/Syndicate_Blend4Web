@@ -142,10 +142,10 @@ function init_controls(){
     init_buttons();
 
     document.getElementById("load-1").addEventListener("click", function(e) {
-        m_data.load(ASSETS_PATH + "Pocket.json", loaded_cb, null, null, true);
+        m_data.load(APP_ASSETS_PATH + "Pocket.json", loaded_cb, null, null, true);
     });
     document.getElementById("load-2").addEventListener("click", function(e) {
-        m_data.load(ASSETS_PATH + "Button.json", loaded_cb, null, null, true);
+        m_data.load(APP_ASSETS_PATH + "Button.json", loaded_cb, null, null, true);
     });
 	
 	document.getElementById("delete").addEventListener("click", function(e) {
