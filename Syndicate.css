@@ -1,19 +1,93 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+
+div#main_canvas_container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
 *:active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     -moz-tap-highlight-color: rgba(0,0,0,0);
     tap-highlight-color: rgba(0,0,0,0);
 }
 
-body {
-  background-color: #000;
-  margin: 0;
-  overflow: hidden;
+#controls-container {
+    
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1;
+    pointer-events: none;
 }
+    .top-line {
+        height: 100px;
+        background: url("./interface/8.png") repeat-x;
+        background-size: 100% 100%;
+    }
+    .bottom-line {
+        height: 140px;
+        background-color: #fff;
+    }
+        .button-container {
+            display: table;
+            margin: 0 auto;
+            height: 130px;
+        }
+            .button {
+                float: left;
+                height: 100%;
+                cursor: pointer;
+                background-repeat: no-repeat;
+                pointer-events: auto;
+            }
+                .data-button {
+                    width: 130px;
+                    height: 130px;
+                    background-image: url("./interface/Unselected.png");
+                    background-size: cover;
+                }
+                    .data-button:not(.delete-container):before {
+                        content: "";
+                        position: absolute;
+                        width: 146px;
+                        height: 146px;
+                        margin: -8px 0 0 -8px;
+                        background-repeat: no-repeat;
+                        background-size: cover;
+                    }
+                        .data-button#load-1:before {
+                            background-image: url("./interface/Pocket.png");
+                        }
+                        .data-button#load-2:before {
+                            background-image: url("./interface/Button.png");
+                        }                        
+                    .data-button:active:not(.delete-container) {
+                        background-image: url("./interface/Selected.png");
+                    }
 
-#main_canvas_container {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-}
+                .delete-container {
+                    cursor: default;
+                    background-image: url("./interface/Delete.png");
+                }
+                    .delete-container.active {
+                        background-image: url("./interface/Delete_2.png");
+                    }
+                    #delete {
+                        margin: 25% auto 0;
+                        cursor: pointer;
+                        width: 60%;
+                        height: 55%;
+                    }
+
+

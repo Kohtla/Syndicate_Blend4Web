@@ -49,12 +49,23 @@ var _selected_obj = null;
  * export the method to initialize the app (called at the bottom of this file)
  */
 exports.init = function() {
+    var show_fps = DEBUG;
+
+    var url_params = m_app.get_url_params();
+
+    if (url_params && "show_fps" in url_params)
+        show_fps = true;
+
     m_app.init({
         canvas_container_id: "main_canvas_container",
         callback: init_cb,
-        show_fps: DEBUG,
+        physics_enabled: true,
+        show_fps: show_fps,
+        alpha: false,
+        assets_dds_available: !DEBUG,
+        assets_min50_available: !DEBUG,
         console_verbose: DEBUG,
-        autoresize: true
+        background_color: [1.0, 1.0, 1.0, 0.0]
     });
 }
 
@@ -95,10 +106,7 @@ function init_cb(canvas_elem, success) {
 /**
  * load the scene data
  */
-function load() {
-    m_data.load(APP_ASSETS_PATH + "Syndicate.json", load_cb, preloader_cb);
-	m_data.load(APP_ASSETS_PATH + "Shirt.json", load_cb,preloader_cb);
-}
+
 
 /**
  * update the app's preloader
@@ -110,6 +118,10 @@ function preloader_cb(percentage) {
 /**
  * callback executed when the scene data is loaded
  */
+function load() {
+    m_data.load(APP_ASSETS_PATH + "Syndicate.json", load_cb, preloader_cb);
+	//m_data.load(APP_ASSETS_PATH + "Shirt.json", load_cb,preloader_cb);
+}
 function load_cb(data_id, success) {
 
     if (!success) {
