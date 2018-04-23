@@ -26,6 +26,17 @@ var m_quat      = require("quat");
 
 // detect application mode
 var DEBUG = (m_ver.type() == "DEBUG");
+	
+var OUTLINE_COLOR_VALID = [0, 1, 0];
+var OUTLINE_COLOR_ERROR = [1, 0, 0];
+var FLOOR_PLANE_NORMAL = [0, 0, 1];
+
+var ROT_ANGLE = Math.PI/4;
+
+var WALL_X_MAX = 4;
+var WALL_X_MIN = -3.8;
+var WALL_Y_MAX = 3.5;
+var WALL_Y_MIN = -4.2;
 
 // automatically detect assets path
 var APP_ASSETS_PATH = m_cfg.get_assets_path("Syndicate");
@@ -33,11 +44,13 @@ var APP_ASSETS_PATH = m_cfg.get_assets_path("Syndicate");
 //Важные переменные
 var _obj_delta_xy = new Float32Array(2);
 var spawner_pos = new Float32Array(3);
-var _vec3_tmp = new Float32Array(3);
+var _vec3_tmp = new Float32Array(3); 
 var _vec3_tmp2 = new Float32Array(3);
 var _vec3_tmp3 = new Float32Array(3);
 var _vec4_tmp = new Float32Array(4);
 var _pline_tmp = m_math.create_pline();
+	
+
 
 var _drag_mode = false;
 var _enable_camera_controls = true;
@@ -128,6 +141,9 @@ function load_cb(data_id, success) {
         console.log("b4w load failure");
         return;
     }
+	init_controls();
+	
+	
 
     m_app.enable_camera_controls();
 	
@@ -140,9 +156,10 @@ function init_controls(){
     controls_elem.style.display = "block";
 
     init_buttons();
+	console.log("init_controls");
 
     document.getElementById("load-1").addEventListener("click", function(e) {
-        m_data.load(APP_ASSETS_PATH + "Pocket.json", loaded_cb, null, null, true);
+        m_data.load(APP_ASSETS_PATH + "Pocket.json", loaded_cb, null, null, true);		
     });
     document.getElementById("load-2").addEventListener("click", function(e) {
         m_data.load(APP_ASSETS_PATH + "Button.json", loaded_cb, null, null, true);
@@ -193,7 +210,7 @@ function loaded_cb(data_id) {
             m_phy.enable_simulation(obj);
 
             // create sensors to detect collisions
-            var sensor_col = m_ctl.create_collision_sensor(obj, "FURNITURE");
+            var sensor_col = m_ctl.create_collision_sensor(obj, "Details");
             var sensor_sel = m_ctl.create_selection_sensor(obj, true);
 
             if (obj == _selected_obj)
@@ -323,6 +340,33 @@ function main_canvas_move(e) {
                 }
             }
         }
+}
+	
+	function limit_object_position(obj) {
+    var bb = m_trans.get_object_bounding_box(obj);
+
+    var obj_parent = m_obj.get_parent(obj);
+    if (obj_parent && m_obj.is_armature(obj_parent))
+        // get translation from the parent (armature) of the animated object
+        var obj_pos = m_trans.get_translation(obj_parent, _vec3_tmp);
+    else
+        var obj_pos = m_trans.get_translation(obj, _vec3_tmp);
+
+    if (bb.max_x > WALL_X_MAX)
+        obj_pos[0] -= bb.max_x - WALL_X_MAX;
+    else if (bb.min_x < WALL_X_MIN)
+        obj_pos[0] += WALL_X_MIN - bb.min_x;
+
+    if (bb.max_y > WALL_Y_MAX)
+        obj_pos[1] -= bb.max_y - WALL_Y_MAX;
+    else if (bb.min_y < WALL_Y_MIN)
+        obj_pos[1] += WALL_Y_MIN - bb.min_y;
+
+    if (obj_parent && m_obj.is_armature(obj_parent))
+        // translate the parent (armature) of the animated object
+        m_trans.set_translation_v(obj_parent, obj_pos);
+    else
+        m_trans.set_translation_v(obj, obj_pos);
 }
 	
     /*function main_canvas_clicked_cb(event){
