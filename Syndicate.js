@@ -275,12 +275,17 @@ function init_logic() {
 		console.log(flag);
 	}
 	
+	var mouse_up_cb =function(e)
+	{
+		decal_src = null;
+	}
+	
     var cont = m_cont.get_container();
 	
 			cont.addEventListener("mousedown",mouse_down_cb,false);
 		
 	
-			cont.addEventListener("mouseup", mouse_cb, false);
+			cont.addEventListener("mouseup", mouse_up_cb, false);
 			
 			cont.addEventListener("mousemove", mouse_cb, false);
 	
