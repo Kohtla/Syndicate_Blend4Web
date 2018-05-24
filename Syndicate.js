@@ -25,7 +25,8 @@ var m_scenes    = require("scenes");
 var m_trans     = require("transform");
 var m_cont      = require("container");
 var m_tsr       = require("tsr");
-var m_util 		=require("util");
+var m_util 		= require("util");
+var m_geom      = require("geometry");
 	
 	
 	
@@ -88,6 +89,18 @@ function load_cb(data_id) {
     init_logic();
 	init_controls();
 	m_app.enable_camera_controls();
+	var main_interface_container = document.createElement("div");
+    main_interface_container.className = "main_sliders_container";
+    main_interface_container.setAttribute("id", "main_sliders_container");
+    document.body.appendChild(main_interface_container);
+    m_app.enable_camera_controls(false, false, false, null, true);
+    var object = m_scenes.get_object_by_name("Main");
+    if (object)
+		{
+			console.log("Объект существует");
+			create_interface(object);
+		}
+        
 }
 	
 function preloader_cb(percentage) {
@@ -291,6 +304,73 @@ function init_logic() {
 	
 	
     
+}
+	
+	
+	function create_interface(obj) {
+    if (!m_geom.check_shape_keys(obj))
+        return; 
+	console.log("Shape Keys существуют");	
+    var shape_keys_names = m_geom.get_shape_keys_names(obj);
+    for (var i  = 0; i < shape_keys_names.length; i++) {		
+        create_slider(obj, shape_keys_names[i], shape_keys_names[i]);
+    }
+}
+
+function create_slider(obj, key_name, slider_name) {
+	console.log(key_name+" добавлен в очередь");
+    var slider = init_slider(slider_name);
+    var value_label = document.getElementById(slider_name);
+    var value = m_geom.get_shape_key_value(obj, key_name);
+
+    slider.min = 0;
+    slider.max = 1;
+    slider.step = 0.02;
+    slider.value = value;
+    value_label.textContent = slider.value;
+
+    function slider_changed(e) {
+        m_geom.set_shape_key_value(obj, key_name, slider.value);
+        m_obj.update_boundings(obj);
+        value_label.textContent = slider.value;
+    }
+
+    if (is_ie11())
+        slider.onchange = slider_changed;
+    else
+        slider.oninput = slider_changed;
+}
+
+
+
+function init_slider(name) {
+    var container = document.createElement("div");
+    container.className = "slider_container";
+
+    var name_label = document.createElement("label");
+    name_label.className = "text_label";
+    name_label.textContent = name;
+
+    var slider = document.createElement("input");
+    slider.className = "input_slider";
+    slider.setAttribute("type", "range");
+
+    var value_label = document.createElement("label");
+    value_label.className = "value_label";
+    value_label.setAttribute("id", name);
+
+    container.appendChild(name_label);
+    container.appendChild(slider);
+    container.appendChild(value_label);
+
+    var main_slider_container = document.getElementById("main_sliders_container");
+    main_slider_container.appendChild(container);
+
+    return slider;
+}
+	
+function is_ie11() {
+    return !(window.ActiveXObject) && "ActiveXObject" in window;
 }
 	});
 

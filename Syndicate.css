@@ -91,3 +91,78 @@ div#main_canvas_container {
                     }
 
 
+.main_sliders_container {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    z-index: 1;
+}
+
+input[type="range" i] {
+    color: rgb(196, 196, 196);
+}
+
+.text_label {
+    background-color: #323232;
+    border: 2px solid rgba(98, 98, 98, .2);
+    border-radius: 2px;
+    width: 120px;
+    height: 30px;
+    display: block;
+    float: left;
+    font-size: 16px;
+    font-weight: normal;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    line-height: 28px;
+    margin-bottom: 4px;
+    box-shadow: 0px 0px 4px 0px rgba(98, 98, 98, .8);
+}
+
+.slider_container {
+    margin-bottom: 8px;
+    height: 30px;
+}
+
+.input_slider {
+    -webkit-appearance: none;
+    width: 300px;
+    display: block;
+    float: left;
+    height: 8px;
+    margin-top: 11px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.value_label {
+    background-color: #323232;
+    border: 2px solid rgba(98, 98, 98, .2);
+    border-radius: 2px;
+    width: 50px;
+    height: 30px;
+    display: block;
+    float: left;
+    font-size: 16px;
+    font-weight: normal;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    line-height: 28px;
+    margin-bottom: 4px;
+    box-shadow: 0px 0px 4px 0px rgba(98, 98, 98, .8);
+}
+
+.input_slider {
+    -webkit-appearance: none;
+    width: 300px;
+    display: block;
+    float: left;
+    height: 8px;
+    margin-top: 11px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
